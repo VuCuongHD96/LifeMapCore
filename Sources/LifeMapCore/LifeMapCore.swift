@@ -3,22 +3,38 @@
 
 import SwiftUI
 
-struct ContentView: View {
+public struct LifeMapCore: View {
     
-    let input: LifeMapCoreViewModel.Input = .init()
-    @State var output: LifeMapCoreViewModel.Output = .init()
+    @State private var isPin = true
+    
+    let input: LifeMapCoreViewModel.Input
+    @State var output: LifeMapCoreViewModel.Output
     let cancelBag = CancelBag()
     
-    var body: some View {
+    public init() {
+        let input: LifeMapCoreViewModel.Input = .init()
+        let viewModel = LifeMapCoreViewModel()
+        output = viewModel.transform(input, cancelBag: cancelBag)
+        self.input = input
+    }
+    
+    public var body: some View {
         MapViewRepresentable()
             .ignoresSafeArea()
-            .onAppear {
-                let viewModel = LifeMapCoreViewModel()
-                output = viewModel.transform(input, cancelBag: cancelBag)
-            }
+            .setupMapCoreScopeModifier(
+                param: .init(
+                    isPin: isPin,
+                    pinAction: {
+                        isPin = false
+                    },
+                    unpinAction: {
+                        isPin = true
+                    }
+                )
+            )
     }
 }
 
 #Preview {
-    ContentView()
+    LifeMapCore()
 }
