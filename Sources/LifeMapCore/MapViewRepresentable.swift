@@ -12,12 +12,23 @@ struct MapViewRepresentable: UIViewRepresentable {
     
     typealias UIViewType = MKMapView
     
+    let isPin: Bool
+    
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         return mapView
     }
     
     func updateUIView(_ uiView: MKMapView, context: Context) {
-        
+        setupAnnotation(uiView)
+    }
+    
+    func setupAnnotation(_ uiView: MKMapView) {
+        let coordinate = uiView.region.center
+        uiView.removeAnnotations(uiView.annotations)
+        if isPin {
+            let dragPin = DragPin(coordinate: coordinate)
+            uiView.addAnnotation(dragPin)
+        }
     }
 }
