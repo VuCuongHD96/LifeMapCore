@@ -1,0 +1,27 @@
+name: LifeMapCoreDemo
+options:
+  createIntermediateGroups: true
+packages:
+  LifeMapCore:
+    path: .
+targets:
+  iOSDemo:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: iOSDemo
+        excludes:
+          - iOSDemo.xcodeproj
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.sun.LifeMapCoreDemo
+      INFOPLIST_FILE: iOSDemo/Info.plist
+    dependencies:
+      - package: LifeMapCore
+        product: LifeMapCore
+schemes:
+  iOSDemo:
+    build:
+      targets:
+        iOSDemo: all
+
