@@ -4,11 +4,10 @@
 import SwiftUI
 
 public struct LifeMapCore: View {
-    
-    @State private var isPin = true
-    
-    let input: LifeMapCoreViewModel.Input
-    @State var output: LifeMapCoreViewModel.Output
+        
+    @State private var isPin: Bool = true
+    @ObservedObject var input: LifeMapCoreViewModel.Input
+    @ObservedObject var output: LifeMapCoreViewModel.Output
     let cancelBag = CancelBag()
     
     public init() {
@@ -19,19 +18,21 @@ public struct LifeMapCore: View {
     }
     
     public var body: some View {
-        MapViewRepresentable()
-            .ignoresSafeArea()
-            .setupMapCoreScopeModifier(
-                param: .init(
-                    isPin: isPin,
-                    pinAction: {
-                        isPin = false
-                    },
-                    unpinAction: {
-                        isPin = true
-                    }
-                )
+        MapViewRepresentable(
+            isPin: output.isPin
+        )
+        .ignoresSafeArea()
+        .setupMapCoreScopeModifier(
+            param: .init(
+                isPin: output.isPin,
+                pinAction: {
+                    input.pinAction.send(.pin)
+                },
+                unpinAction: {
+                    input.pinAction.send(.unPin)
+                }
             )
+        )
     }
 }
 

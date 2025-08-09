@@ -36,9 +36,9 @@ struct MapCoreScopeModifier: ViewModifier {
     private var mapScorePinControlButton: some View {
         Group {
             if param.isPin {
-                mapScopePinButton
-            } else {
                 mapScopeUnPinButton
+            } else {
+                mapScopePinButton
             }
         }
         .frame(width: 44, height: 44)
