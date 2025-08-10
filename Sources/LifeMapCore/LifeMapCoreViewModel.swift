@@ -7,20 +7,31 @@
 
 import CoreLocation
 import Combine
+import Observation
 
 struct LifeMapCoreViewModel: ViewModelType {
     
     class Input: ObservableObject {
         var pinAction = PassthroughSubject<PinCase, Never>()
         let dragPinTrigger = PassthroughSubject<DragPin, Never>()
+        let zoomTrigger = PassthroughSubject<ZoomCase, Never>()
     }
     
-    class Output: ObservableObject {
-        @Published var isPin = false
+    @Observable
+    class Output {
+         var isPin = false
+         var isZoomIn = true
     }
     
     func transform(_ input: Input, cancelBag: CancelBag) -> Output {
         let output = Output()
+        
+        input.zoomTrigger
+            .map {
+                $0 == .zoomIn
+            }
+            .assign(to: \.isZoomIn, on: output)
+            .store(in: cancelBag)
         
         input.dragPinTrigger
             .sink {

@@ -25,16 +25,21 @@ struct MapViewRepresentable: UIViewRepresentable {
         return .init(dragPinHander: dragPinHander)
     }
     
-    func updateUIView(_ uiView: MKMapView, context: Context) {
-        setupAnnotation(uiView)
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+        setupDragPin(uiView)
     }
     
-    func setupAnnotation(_ uiView: MKMapView) {
-        let coordinate = uiView.region.center
-        uiView.removeAnnotations(uiView.annotations)
+    func setupDragPin(_ uiView: MKMapView) {
+        let existingDragPin = uiView.annotations.first { $0 is DragPin } as? DragPin
         if isPin {
-            let dragPin = DragPin(coordinate: coordinate)
-            uiView.addAnnotation(dragPin)
+            if existingDragPin == nil {
+                let dragPin = DragPin(coordinate: uiView.region.center)
+                uiView.addAnnotation(dragPin)
+            }
+        } else {
+            if let existingDragPin {
+                uiView.removeAnnotation(existingDragPin)
+            }
         }
     }
 }

@@ -13,9 +13,11 @@ struct MapCoreScopeModifier: ViewModifier {
     struct Param {
         let isPin: Bool
         let pinAction: PinCaseHandler?
+        let isZoomIn: Bool
+        let zoomAction: ZoomCaseHandler?
     }
     
-    var param: Param
+    let param: Param
     
     func body(content: Content) -> some View {
         content
@@ -27,9 +29,37 @@ struct MapCoreScopeModifier: ViewModifier {
     private var mapScopeButtonList: some View {
         VStack {
             mapScorePinControlButton
+            zoomButton
         }
         .buttonBorderShape(.circle)
         .padding(8)
+    }
+    
+    private var zoomButton: some View {
+        Group {
+            if param.isZoomIn {
+                zoomOutButton
+            } else {
+                zoomInButton
+            }
+        }
+        .frame(width: 44, height: 44)
+        .background(.blue)
+        .clipShape(.circle)
+    }
+    
+    private var zoomOutButton: some View {
+        Image("zoom_out", bundle: .module)
+            .onTapGesture {
+                param.zoomAction?(.zoomOut)
+            }
+    }
+    
+    private var zoomInButton: some View {
+        Image("zoom_in", bundle: .module)
+            .onTapGesture {
+                param.zoomAction?(.zoomIn)
+            }
     }
     
     private var mapScorePinControlButton: some View {
