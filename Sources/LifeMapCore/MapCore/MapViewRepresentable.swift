@@ -8,24 +8,29 @@
 import MapKit
 import SwiftUI
 
-struct MapViewRepresentable: UIViewRepresentable {
+public struct MapViewRepresentable: UIViewRepresentable {
     
-    typealias UIViewType = MKMapView
+    public typealias UIViewType = MKMapView
     
     let isPin: Bool
     let dragPinHander: DragPinHandler?
     
-    func makeUIView(context: Context) -> MKMapView {
+    init(isPin: Bool, dragPinHander: DragPinHandler?) {
+        self.isPin = isPin
+        self.dragPinHander = dragPinHander
+    }
+    
+    public func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
         return mapView
     }
     
-    func makeCoordinator() -> MapCoordinator {
+    public func makeCoordinator() -> MapCoordinator {
         return .init(dragPinHander: dragPinHander)
     }
     
-    func updateUIView(_ uiView: MKMapView, context: Context) {
+    public func updateUIView(_ uiView: MKMapView, context: Context) {
         setupAnnotation(uiView)
     }
     
