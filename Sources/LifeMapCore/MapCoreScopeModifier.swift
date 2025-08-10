@@ -12,8 +12,7 @@ struct MapCoreScopeModifier: ViewModifier {
     
     struct Param {
         let isPin: Bool
-        let pinAction: VoidHandler?
-        let unpinAction: VoidHandler?
+        let pinAction: PinCaseHandler?
     }
     
     var param: Param
@@ -49,7 +48,7 @@ struct MapCoreScopeModifier: ViewModifier {
             .resizable()
             .foregroundStyle(.purple)
             .onTapGesture {
-                param.pinAction?()
+                param.pinAction?(.pin)
             }
     }
     
@@ -58,7 +57,7 @@ struct MapCoreScopeModifier: ViewModifier {
             .resizable()
             .foregroundStyle(.purple)
             .onTapGesture {
-                param.unpinAction?()
+                param.pinAction?(.unPin)
             }
     }
 }
