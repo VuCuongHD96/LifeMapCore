@@ -16,7 +16,6 @@ struct LocationUseCase {
         let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         let geocoder = CLGeocoder()
         
-        
         geocoder.reverseGeocodeLocation(location, completionHandler: { placemarks, error in
             if error != nil {
                 return
