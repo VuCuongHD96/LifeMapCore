@@ -1,0 +1,1 @@
+typealias PinCaseHandler = (PinCase) -> Void

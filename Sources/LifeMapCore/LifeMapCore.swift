@@ -29,10 +29,7 @@ public struct LifeMapCore: View {
             param: .init(
                 isPin: output.isPin,
                 pinAction: {
-                    input.pinAction.send(.pin)
-                },
-                unpinAction: {
-                    input.pinAction.send(.unPin)
+                    input.pinAction.send($0)
                 }
             )
         )
