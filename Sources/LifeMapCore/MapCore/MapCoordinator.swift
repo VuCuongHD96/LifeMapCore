@@ -18,18 +18,35 @@ class MapCoordinator: NSObject, MKMapViewDelegate {
         return markerAnnotationView
     }
     
+    func mapView(
+        _ mapView: MKMapView,
+        annotationView view: MKAnnotationView,
+        didChange newState: MKAnnotationView.DragState,
+        fromOldState oldState: MKAnnotationView.DragState
+    ) {
+        if newState == .ending {
+            if let dragPin = view.annotation as? DragPin {
+                updateDragPin(mapView: mapView, dragPin: dragPin)
+            }
+        }
+    }
+    
     func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
         guard let dragPinView = views.first(where: { $0.annotation is DragPin }),
               let dragPin = dragPinView.annotation as? DragPin else {
             return
         }
-
+        
         if let title = dragPin.title, title.isEmpty {
-            locationUseCase.findMapItem(coordinate: dragPin.coordinate) { updatedPin in
-                mapView.removeAnnotation(dragPin)
-                mapView.addAnnotation(updatedPin)
-                mapView.selectAnnotation(updatedPin, animated: true)
-            }
+            updateDragPin(mapView: mapView, dragPin: dragPin)
+        }
+    }
+    
+    private func updateDragPin(mapView: MKMapView, dragPin: DragPin) {
+        locationUseCase.findMapItem(coordinate: dragPin.coordinate) { updatedPin in
+            mapView.removeAnnotation(dragPin)
+            mapView.addAnnotation(updatedPin)
+            mapView.selectAnnotation(updatedPin, animated: true)
         }
     }
 }
