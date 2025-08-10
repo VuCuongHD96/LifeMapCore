@@ -11,8 +11,8 @@ import Combine
 struct LifeMapCoreViewModel: ViewModelType {
     
     class Input: ObservableObject {
-        var centerLocation: CLLocationCoordinate2D?
         var pinAction = PassthroughSubject<PinCase, Never>()
+        let dragPinTrigger = PassthroughSubject<DragPin, Never>()
     }
     
     class Output: ObservableObject {
@@ -21,6 +21,12 @@ struct LifeMapCoreViewModel: ViewModelType {
     
     func transform(_ input: Input, cancelBag: CancelBag) -> Output {
         let output = Output()
+        
+        input.dragPinTrigger
+            .sink {
+                print("--- debug --- drag pin ", $0)
+            }
+            .store(in: cancelBag)
         
         input.pinAction
             .map {

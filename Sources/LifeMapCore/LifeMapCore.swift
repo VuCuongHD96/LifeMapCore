@@ -19,7 +19,10 @@ public struct LifeMapCore: View {
     
     public var body: some View {
         MapViewRepresentable(
-            isPin: output.isPin
+            isPin: output.isPin,
+            dragPinHander: {
+                input.dragPinTrigger.send($0)
+            }
         )
         .ignoresSafeArea()
         .setupMapCoreScopeModifier(
