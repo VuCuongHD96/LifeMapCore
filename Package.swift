@@ -11,7 +11,12 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "LifeMapCore"),
-
+            name: "LifeMapCore",
+            path: "Sources",
+            sources: ["LifeMapCore"],
+            resources: [
+                .process("Media.xcassets")
+            ]
+        ),
     ]
 )
