@@ -9,6 +9,12 @@ import MapKit
 
 class MapCoordinator: NSObject, MKMapViewDelegate {
     
+    let dragPinHander: DragPinHandler?
+    
+    init(dragPinHander: DragPinHandler?) {
+        self.dragPinHander = dragPinHander
+    }
+    
     let locationUseCase = LocationUseCase()
     
     func mapView(_ mapView: MKMapView, viewFor annotation: any MKAnnotation) -> MKAnnotationView? {
@@ -47,6 +53,7 @@ class MapCoordinator: NSObject, MKMapViewDelegate {
             mapView.removeAnnotation(dragPin)
             mapView.addAnnotation(updatedPin)
             mapView.selectAnnotation(updatedPin, animated: true)
+            self.dragPinHander?(updatedPin)
         }
     }
 }
