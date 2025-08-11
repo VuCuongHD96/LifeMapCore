@@ -8,28 +8,44 @@
 import MapKit
 import SwiftUI
 
-struct MapViewRepresentable: UIViewRepresentable {
+public struct MapViewRepresentable: UIViewRepresentable {
     
-    typealias UIViewType = MKMapView
+    public typealias UIViewType = MKMapView
     
-    let isPin: Bool
-    let dragPinHander: DragPinHandler?
+    public let isPin: Bool
+    public let storageMapItemList: [LocationAnnotation]
+    public let dragPinHander: DragPinHandler?
     
-    func makeUIView(context: Context) -> MKMapView {
+    public init(
+        isPin: Bool,
+        storageMapItemList: [LocationAnnotation],
+        dragPinHander: DragPinHandler?
+    ) {
+        self.isPin = isPin
+        self.storageMapItemList = storageMapItemList
+        self.dragPinHander = dragPinHander
+    }
+    
+    public func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
         return mapView
     }
     
-    func makeCoordinator() -> MapCoordinator {
+    public func makeCoordinator() -> MapCoordinator {
         return .init(dragPinHander: dragPinHander)
     }
     
-    func updateUIView(_ uiView: UIViewType, context: Context) {
+    public func updateUIView(_ uiView: UIViewType, context: Context) {
+        setupStorageMapItem(uiView: uiView)
         setupDragPin(uiView)
     }
     
-    func setupDragPin(_ uiView: MKMapView) {
+    private func setupStorageMapItem(uiView: UIViewType) {
+        uiView.addAnnotations(storageMapItemList)
+    }
+    
+    private func setupDragPin(_ uiView: MKMapView) {
         let existingDragPin = uiView.annotations.first { $0 is DragPin } as? DragPin
         if isPin {
             if existingDragPin == nil {

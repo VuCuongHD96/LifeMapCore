@@ -7,7 +7,7 @@
 
 import MapKit
 
-class MapCoordinator: NSObject, MKMapViewDelegate {
+public class MapCoordinator: NSObject, MKMapViewDelegate {
     
     let dragPinHander: DragPinHandler?
     
@@ -17,14 +17,22 @@ class MapCoordinator: NSObject, MKMapViewDelegate {
     
     let locationUseCase = LocationUseCase()
     
-    func mapView(_ mapView: MKMapView, viewFor annotation: any MKAnnotation) -> MKAnnotationView? {
+    public func mapView(_ mapView: MKMapView, viewFor annotation: any MKAnnotation) -> MKAnnotationView? {
+        if annotation is DragPin {
+            return setupDragPin(mapView: mapView, annotation: annotation)
+        }
+        return nil
+    }
+    
+    private func setupDragPin(mapView: MKMapView, annotation: any MKAnnotation) -> MKAnnotationView? {
         let markerAnnotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "DragPin")
         markerAnnotationView.isDraggable = true
         markerAnnotationView.canShowCallout = true
+        markerAnnotationView.markerTintColor = .systemPurple
         return markerAnnotationView
     }
     
-    func mapView(
+    public func mapView(
         _ mapView: MKMapView,
         annotationView view: MKAnnotationView,
         didChange newState: MKAnnotationView.DragState,
@@ -37,7 +45,7 @@ class MapCoordinator: NSObject, MKMapViewDelegate {
         }
     }
     
-    func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
+    public func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
         guard let dragPinView = views.first(where: { $0.annotation is DragPin }),
               let dragPin = dragPinView.annotation as? DragPin else {
             return

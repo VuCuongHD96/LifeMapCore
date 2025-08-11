@@ -12,6 +12,7 @@ import Observation
 struct LifeMapCoreViewModel: ViewModelType {
     
     class Input: ObservableObject {
+        let loadTrigger = PassthroughSubject<Void, Never>()
         var pinAction = PassthroughSubject<PinCase, Never>()
         let dragPinTrigger = PassthroughSubject<DragPin, Never>()
         let zoomTrigger = PassthroughSubject<ZoomCase, Never>()
@@ -19,12 +20,31 @@ struct LifeMapCoreViewModel: ViewModelType {
     
     @Observable
     class Output {
-         var isPin = false
-         var isZoomIn = true
+        var isPin = false
+        var isZoomIn = true
+        var storageMapItemList: [LocationAnnotation] = []
     }
     
     func transform(_ input: Input, cancelBag: CancelBag) -> Output {
         let output = Output()
+        
+        input.loadTrigger
+            .map {
+                let locationAnnotationList: [LocationAnnotation] =   [
+                    .init(id: UUID().uuidString,
+                          title: "Thanh Xuân",
+                          coordinate: .init(latitude: 20.994468, longitude: 105.804509)),
+                    .init(id: UUID().uuidString,
+                          title: "Thuỵ Khuê",
+                          coordinate: .init(latitude: 21.041915, longitude: 105.828957)),
+                    .init(id: UUID().uuidString,
+                          title: "TP Vinh",
+                          coordinate: .init(latitude: 18.699628, longitude: 105.745515))
+                ]
+                return locationAnnotationList
+            }
+            .assign(to: \.storageMapItemList, on: output)
+            .store(in: cancelBag)
         
         input.zoomTrigger
             .map {
@@ -41,7 +61,7 @@ struct LifeMapCoreViewModel: ViewModelType {
         
         input.pinAction
             .map {
-               return $0 == .pin
+                $0 == .pin
             }
             .sink {
                 output.isPin = $0
