@@ -4,10 +4,10 @@
 import SwiftUI
 
 public struct LifeMapCore: View {
-        
+    
     @State private var isPin: Bool = true
     @ObservedObject var input: LifeMapCoreViewModel.Input
-    @ObservedObject var output: LifeMapCoreViewModel.Output
+    @State var output: LifeMapCoreViewModel.Output
     let cancelBag = CancelBag()
     
     public init() {
@@ -30,6 +30,10 @@ public struct LifeMapCore: View {
                 isPin: output.isPin,
                 pinAction: {
                     input.pinAction.send($0)
+                },
+                isZoomIn: output.isZoomIn,
+                zoomAction: {
+                    input.zoomTrigger.send($0)
                 }
             )
         )
