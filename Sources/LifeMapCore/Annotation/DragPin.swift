@@ -7,18 +7,13 @@
 
 import MapKit
 
-class DragPin: CoreAnnotation {
+public class DragPin: LocationAnnotation {
     
-    let id: String
-    var title: String?
-  
-    init(id: String, title: String, coordinate: CLLocationCoordinate2D) {
-        self.id = id
-        self.title = title
-        super.init(coordinate: coordinate)
+    public init(coordinate: CLLocationCoordinate2D) {
+        super.init(id: "", title: "", coordinate: coordinate)
     }
     
-    convenience override init(coordinate: CLLocationCoordinate2D) {
-        self.init(id: "", title: "", coordinate: coordinate)
+    public override init(id: String, title: String, coordinate: CLLocationCoordinate2D) {
+        super.init(id: id, title: title, coordinate: coordinate)
     }
 }

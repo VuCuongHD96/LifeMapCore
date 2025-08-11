@@ -15,11 +15,13 @@ public struct LifeMapCore: View {
         let viewModel = LifeMapCoreViewModel()
         output = viewModel.transform(input, cancelBag: cancelBag)
         self.input = input
+        input.loadTrigger.send()
     }
     
     public var body: some View {
         MapViewRepresentable(
             isPin: output.isPin,
+            storageMapItemList: output.storageMapItemList,
             dragPinHander: {
                 input.dragPinTrigger.send($0)
             }
