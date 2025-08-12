@@ -1,1 +1,1 @@
-typealias PinCaseHandler = (PinCase) -> Void
+public typealias PinCaseHandler = (PinCase) -> Void

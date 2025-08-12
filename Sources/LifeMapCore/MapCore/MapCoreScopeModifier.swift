@@ -8,18 +8,11 @@
 import SwiftUI
 import MapKit
 
-struct MapCoreScopeModifier: ViewModifier {
+public struct MapCoreScopeModifier: ViewModifier {
     
-    struct Param {
-        let isPin: Bool
-        let pinAction: PinCaseHandler?
-        let isZoomIn: Bool
-        let zoomAction: ZoomCaseHandler?
-    }
+    public let param: Param
     
-    let param: Param
-    
-    func body(content: Content) -> some View {
+    public func body(content: Content) -> some View {
         content
             .overlay(alignment: .topTrailing) {
                 mapScopeButtonList
@@ -94,7 +87,7 @@ struct MapCoreScopeModifier: ViewModifier {
 
 extension View {
     
-    func setupMapCoreScopeModifier(param: MapCoreScopeModifier.Param) -> some View {
+    public func setupMapCoreScopeModifier(param: MapCoreScopeModifier.Param) -> some View {
         self.modifier(
             MapCoreScopeModifier(param: param)
         )

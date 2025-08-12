@@ -5,7 +5,7 @@
 //  Created by sun on 9/8/25.
 //
 
-enum PinCase {
+public enum PinCase {
     case pin
     case unPin
 }
