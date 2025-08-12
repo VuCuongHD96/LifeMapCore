@@ -5,7 +5,7 @@
 //  Created by sun on 10/8/25.
 //
 
-enum ZoomCase {
+public enum ZoomCase {
     case zoomIn
     case zoomOut
 }
