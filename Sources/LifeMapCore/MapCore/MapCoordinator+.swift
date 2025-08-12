@@ -8,16 +8,19 @@
 extension MapCoordinator {
     
     public struct Param {
-        
+
         let dragPinHander: DragPinHandler?
-        let annotationSelectedHandler: LocationAnnotationHandler?
-        
+        let mapItemHandler: LocationAnnotationHandler?
+        let centerCoordinateHandler: CoordinateHandler?
+
         public init(
             dragPinHander: DragPinHandler?,
-            mapItemHandler: LocationAnnotationHandler?
+            mapItemHandler: LocationAnnotationHandler?,
+            centerCoordinateHandler: CoordinateHandler? = nil
         ) {
             self.dragPinHander = dragPinHander
-            self.annotationSelectedHandler = mapItemHandler
+            self.mapItemHandler = mapItemHandler
+            self.centerCoordinateHandler = centerCoordinateHandler
         }
     }
 }

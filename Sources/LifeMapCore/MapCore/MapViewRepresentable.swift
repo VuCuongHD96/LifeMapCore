@@ -50,6 +50,7 @@ public struct MapViewRepresentable: UIViewRepresentable {
         setupDragPin(uiView)
         setupStorageMapItem(uiView: uiView)
         setRegion(uiView: uiView)
+        mapCoordinatorParam.centerCoordinateHandler?(uiView.centerCoordinate)
     }
     
     private func setupSearchMapItem(uiView: UIViewType) {
@@ -80,7 +81,7 @@ public struct MapViewRepresentable: UIViewRepresentable {
         let existingDragPin = uiView.annotations.filter { $0 is DragPin }.first as? DragPin
         if isPin {
             if existingDragPin == nil {
-                let dragPin = DragPin(coordinate: uiView.region.center)
+                let dragPin = DragPin(coordinate: uiView.centerCoordinate)
                 uiView.addAnnotation(dragPin)
             }
         } else {

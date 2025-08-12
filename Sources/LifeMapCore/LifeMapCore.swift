@@ -28,6 +28,9 @@ public struct LifeMapCore: View {
                 input.dragPinTrigger.send($0)
             }, mapItemHandler: {
                 print("--- debug --- mapItemHandler = ", $0)
+            }, centerCoordinateHandler: {
+                print("--- debug --- centerCoordinateHandler = ", $0)
+                input.centerCoordinate = $0
             })
         )
         .ignoresSafeArea()

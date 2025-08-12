@@ -17,6 +17,7 @@ struct LifeMapCoreViewModel: ViewModelType {
         let dragPinTrigger = PassthroughSubject<DragPin, Never>()
         let zoomTrigger = PassthroughSubject<ZoomCase, Never>()
         let randomLocationFocusTrigger = PassthroughSubject<Void, Never>()
+        var centerCoordinate: CLLocationCoordinate2D?
     }
     
     @Observable

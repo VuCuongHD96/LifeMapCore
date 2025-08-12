@@ -10,11 +10,12 @@ import MapKit
 public class MapCoordinator: NSObject, MKMapViewDelegate {
     
     let param: Param
-    let locationUseCase = LocationUseCase()
     
-    init(param: Param) {
+    public init(param: Param) {
         self.param = param
     }
+    
+    let locationUseCase = LocationUseCase()
     
     public func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         guard let annotation = view.annotation as? LocationAnnotation else {
@@ -23,7 +24,7 @@ public class MapCoordinator: NSObject, MKMapViewDelegate {
         if annotation is DragPin {
             return
         }
-        param.annotationSelectedHandler?(annotation)
+        param.mapItemHandler?(annotation)
     }
     
     public func mapView(_ mapView: MKMapView, viewFor annotation: any MKAnnotation) -> MKAnnotationView? {
@@ -70,5 +71,9 @@ public class MapCoordinator: NSObject, MKMapViewDelegate {
             mapView.selectAnnotation(updatedPin, animated: true)
             self.param.dragPinHander?(updatedPin)
         }
+    }
+    
+    public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        param.centerCoordinateHandler?(mapView.centerCoordinate)
     }
 }
