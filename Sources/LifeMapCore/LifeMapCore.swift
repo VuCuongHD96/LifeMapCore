@@ -22,9 +22,11 @@ public struct LifeMapCore: View {
         MapViewRepresentable(
             isPin: output.isPin,
             storageMapItemList: output.storageMapItemList,
-            dragPinHander: {
+            mapCoordinatorParam: .init(dragPinHander: {
                 input.dragPinTrigger.send($0)
-            }
+            }, centerCoordinateHandler: {
+                print("--- debug --- centerCoordinateHandler = ", $0)
+            })
         )
         .ignoresSafeArea()
         .setupMapCoreScopeModifier(
