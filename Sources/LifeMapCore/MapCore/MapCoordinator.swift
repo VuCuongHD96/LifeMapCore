@@ -18,18 +18,16 @@ public class MapCoordinator: NSObject, MKMapViewDelegate {
     let locationUseCase = LocationUseCase()
     
     public func mapView(_ mapView: MKMapView, viewFor annotation: any MKAnnotation) -> MKAnnotationView? {
-        if annotation is DragPin {
-            return setupDragPin(mapView: mapView, annotation: annotation)
+        switch annotation {
+        case let annotation as DragPin:
+            return DragPinAnnotationView(annotation: annotation)
+        case let annotation as StorageMapItemViewData:
+            return StorageMapAnnotationView(annotation: annotation)
+        case let annotation as SearchMapItemViewData:
+            return SearchMapAnnotationView(annotation: annotation)
+        default:
+            return nil
         }
-        return nil
-    }
-    
-    private func setupDragPin(mapView: MKMapView, annotation: any MKAnnotation) -> MKAnnotationView? {
-        let markerAnnotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "DragPin")
-        markerAnnotationView.isDraggable = true
-        markerAnnotationView.canShowCallout = true
-        markerAnnotationView.markerTintColor = .systemPurple
-        return markerAnnotationView
     }
     
     public func mapView(

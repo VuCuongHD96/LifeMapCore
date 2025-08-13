@@ -13,7 +13,7 @@ public class DragPin: LocationAnnotation {
         super.init(id: "", title: "", coordinate: coordinate)
     }
     
-    public override init(id: String, title: String, coordinate: CLLocationCoordinate2D) {
+    public required init(id: String, title: String, coordinate: CLLocationCoordinate2D) {
         super.init(id: id, title: title, coordinate: coordinate)
     }
 }
