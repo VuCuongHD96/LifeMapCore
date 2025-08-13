@@ -55,7 +55,8 @@ public struct MapViewRepresentable: UIViewRepresentable {
     
     private func setRegion(uiView: UIViewType) {
         if let locationFocus {
-            uiView.setRegion(.init(center: locationFocus, span: .medium), animated: true)
+            let region = MKCoordinateRegion(center: locationFocus, span: .medium)
+            uiView.setRegion(region, animated: true)
         }
     }
     
