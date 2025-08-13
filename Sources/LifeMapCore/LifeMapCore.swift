@@ -24,9 +24,11 @@ public struct LifeMapCore: View {
             locationFocus: output.locationFocus,
             storageMapItemList: output.storageMapItemList,
             searchMapItemList: output.searchMapItemList,
-            dragPinHander: {
+            mapCoordinatorParam: .init(dragPinHander: {
                 input.dragPinTrigger.send($0)
-            }
+            }, mapItemHandler: {
+                print("--- debug --- mapItemHandler = ", $0)
+            })
         )
         .ignoresSafeArea()
         .setupMapCoreScopeModifier(

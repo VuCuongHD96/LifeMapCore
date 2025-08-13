@@ -16,20 +16,20 @@ public struct MapViewRepresentable: UIViewRepresentable {
     public let locationFocus: CLLocationCoordinate2D?
     public let storageMapItemList: [StorageMapItemViewData]
     public let searchMapItemList: [SearchMapItemViewData]
-    public let dragPinHander: DragPinHandler?
+    let mapCoordinatorParam: MapCoordinator.Param
     
     public init(
         isPin: Bool,
         locationFocus: CLLocationCoordinate2D?,
         storageMapItemList: [StorageMapItemViewData],
         searchMapItemList: [SearchMapItemViewData],
-        dragPinHander: DragPinHandler?
+        mapCoordinatorParam: MapCoordinator.Param
     ) {
         self.isPin = isPin
         self.locationFocus = locationFocus
         self.storageMapItemList = storageMapItemList
         self.searchMapItemList = searchMapItemList
-        self.dragPinHander = dragPinHander
+        self.mapCoordinatorParam = mapCoordinatorParam
     }
     
     public func makeUIView(context: Context) -> MKMapView {
@@ -39,7 +39,7 @@ public struct MapViewRepresentable: UIViewRepresentable {
     }
     
     public func makeCoordinator() -> MapCoordinator {
-        return .init(dragPinHander: dragPinHander)
+        return .init(param: mapCoordinatorParam)
     }
     
     public func updateUIView(_ uiView: UIViewType, context: Context) {
@@ -55,12 +55,19 @@ public struct MapViewRepresentable: UIViewRepresentable {
     
     private func setRegion(uiView: UIViewType) {
         if let locationFocus {
-            uiView.setRegion(.init(center: locationFocus, span: .medium), animated: true)
+            let region = MKCoordinateRegion(center: locationFocus, span: .medium)
+            uiView.setRegion(region, animated: true)
         }
     }
     
     private func setupStorageMapItem(uiView: UIViewType) {
+        removeAllAnnotation(uiView: uiView)
         uiView.addAnnotations(storageMapItemList)
+    }
+    
+    private func removeAllAnnotation(uiView: UIViewType) {
+        let allAnnotations = uiView.annotations
+        uiView.removeAnnotations(allAnnotations)
     }
     
     private func setupDragPin(_ uiView: MKMapView) {
