@@ -16,6 +16,7 @@ struct LifeMapCoreViewModel: ViewModelType {
         var pinAction = PassthroughSubject<PinCase, Never>()
         let dragPinTrigger = PassthroughSubject<DragPin, Never>()
         let zoomTrigger = PassthroughSubject<ZoomCase, Never>()
+        let randomLocationFocusTrigger = PassthroughSubject<Void, Never>()
     }
     
     @Observable
@@ -23,10 +24,18 @@ struct LifeMapCoreViewModel: ViewModelType {
         var isPin = false
         var isZoomIn = true
         var storageMapItemList: [LocationAnnotation] = []
+        var locationFocus: CLLocationCoordinate2D?
     }
     
     func transform(_ input: Input, cancelBag: CancelBag) -> Output {
         let output = Output()
+        
+        input.randomLocationFocusTrigger
+            .map {
+                output.storageMapItemList.randomElement()?.coordinate
+            }
+            .assign(to: \.locationFocus, on: output)
+            .store(in: cancelBag)
         
         input.loadTrigger
             .map {

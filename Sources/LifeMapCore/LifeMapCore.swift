@@ -21,6 +21,7 @@ public struct LifeMapCore: View {
     public var body: some View {
         MapViewRepresentable(
             isPin: output.isPin,
+            locationFocus: output.locationFocus,
             storageMapItemList: output.storageMapItemList,
             dragPinHander: {
                 input.dragPinTrigger.send($0)
@@ -39,6 +40,15 @@ public struct LifeMapCore: View {
                 }
             )
         )
+        .overlay(alignment: .bottomTrailing) {
+            Image(systemName: "arrow.clockwise.circle.fill")
+                .resizable()
+                .frame(width: 40, height: 40)
+                .padding()
+                .onTapGesture {
+                    input.randomLocationFocusTrigger.send()
+                }
+        }
     }
 }
 

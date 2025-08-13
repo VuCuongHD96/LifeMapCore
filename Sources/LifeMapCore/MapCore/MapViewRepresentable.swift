@@ -13,15 +13,18 @@ public struct MapViewRepresentable: UIViewRepresentable {
     public typealias UIViewType = MKMapView
     
     public let isPin: Bool
+    public let locationFocus: CLLocationCoordinate2D?
     public let storageMapItemList: [LocationAnnotation]
     public let dragPinHander: DragPinHandler?
     
     public init(
         isPin: Bool,
+        locationFocus: CLLocationCoordinate2D?,
         storageMapItemList: [LocationAnnotation],
         dragPinHander: DragPinHandler?
     ) {
         self.isPin = isPin
+        self.locationFocus = locationFocus
         self.storageMapItemList = storageMapItemList
         self.dragPinHander = dragPinHander
     }
@@ -39,6 +42,13 @@ public struct MapViewRepresentable: UIViewRepresentable {
     public func updateUIView(_ uiView: UIViewType, context: Context) {
         setupStorageMapItem(uiView: uiView)
         setupDragPin(uiView)
+        setRegion(uiView: uiView)
+    }
+    
+    private func setRegion(uiView: UIViewType) {
+        if let locationFocus {
+            uiView.setRegion(.init(center: locationFocus, span: .medium), animated: true)
+        }
     }
     
     private func setupStorageMapItem(uiView: UIViewType) {
