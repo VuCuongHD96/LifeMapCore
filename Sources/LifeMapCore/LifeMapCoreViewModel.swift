@@ -23,12 +23,26 @@ struct LifeMapCoreViewModel: ViewModelType {
     class Output {
         var isPin = false
         var isZoomIn = true
-        var storageMapItemList: [LocationAnnotation] = []
+        var storageMapItemList: [StorageMapItemViewData] = []
+        var searchMapItemList: [SearchMapItemViewData] = []
         var locationFocus: CLLocationCoordinate2D?
     }
     
     func transform(_ input: Input, cancelBag: CancelBag) -> Output {
         let output = Output()
+        
+        input.loadTrigger
+            .map {
+                let mapSearchItemList: [SearchMapItemViewData] = [
+                    .init(id: UUID().uuidString,
+                          title: "Đại học quốc gia HN",
+                          coordinate: .init(latitude: 21.037641, longitude: 105.782433)),
+                    .init(id: UUID().uuidString, title: "Tây hồ", coordinate: .init(latitude: 21.055316, longitude: 105.819780))
+                ]
+                return mapSearchItemList
+            }
+            .assign(to: \.searchMapItemList, on: output)
+            .store(in: cancelBag)
         
         input.randomLocationFocusTrigger
             .map {
@@ -39,7 +53,7 @@ struct LifeMapCoreViewModel: ViewModelType {
         
         input.loadTrigger
             .map {
-                let locationAnnotationList: [LocationAnnotation] =   [
+                let locationAnnotationList: [StorageMapItemViewData] =   [
                     .init(id: UUID().uuidString,
                           title: "Thanh Xuân",
                           coordinate: .init(latitude: 20.994468, longitude: 105.804509)),

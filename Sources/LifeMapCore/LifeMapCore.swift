@@ -23,6 +23,7 @@ public struct LifeMapCore: View {
             isPin: output.isPin,
             locationFocus: output.locationFocus,
             storageMapItemList: output.storageMapItemList,
+            searchMapItemList: output.searchMapItemList,
             dragPinHander: {
                 input.dragPinTrigger.send($0)
             }

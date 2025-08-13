@@ -14,18 +14,21 @@ public struct MapViewRepresentable: UIViewRepresentable {
     
     public let isPin: Bool
     public let locationFocus: CLLocationCoordinate2D?
-    public let storageMapItemList: [LocationAnnotation]
+    public let storageMapItemList: [StorageMapItemViewData]
+    public let searchMapItemList: [SearchMapItemViewData]
     public let dragPinHander: DragPinHandler?
     
     public init(
         isPin: Bool,
         locationFocus: CLLocationCoordinate2D?,
-        storageMapItemList: [LocationAnnotation],
+        storageMapItemList: [StorageMapItemViewData],
+        searchMapItemList: [SearchMapItemViewData],
         dragPinHander: DragPinHandler?
     ) {
         self.isPin = isPin
         self.locationFocus = locationFocus
         self.storageMapItemList = storageMapItemList
+        self.searchMapItemList = searchMapItemList
         self.dragPinHander = dragPinHander
     }
     
@@ -40,9 +43,14 @@ public struct MapViewRepresentable: UIViewRepresentable {
     }
     
     public func updateUIView(_ uiView: UIViewType, context: Context) {
+        setupSearchMapItem(uiView: uiView)
         setupStorageMapItem(uiView: uiView)
         setupDragPin(uiView)
         setRegion(uiView: uiView)
+    }
+    
+    private func setupSearchMapItem(uiView: UIViewType) {
+        uiView.addAnnotations(searchMapItemList)
     }
     
     private func setRegion(uiView: UIViewType) {
