@@ -16,16 +16,17 @@ public struct MapCoreScopeModifier: ViewModifier {
         content
             .overlay(alignment: .topTrailing) {
                 mapScopeButtonList
+                    .padding(.top, 110)
             }
     }
     
     private var mapScopeButtonList: some View {
-        VStack {
+        VStack(spacing: 8) {
             mapScorePinControlButton
             zoomButton
         }
         .buttonBorderShape(.circle)
-        .padding(8)
+        .padding(4)
     }
     
     private var zoomButton: some View {
