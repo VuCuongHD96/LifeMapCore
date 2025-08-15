@@ -47,8 +47,8 @@ public struct MapViewRepresentable: UIViewRepresentable {
     
     public func updateUIView(_ uiView: UIViewType, context: Context) {
         setupSearchMapItem(uiView: uiView)
-        setupStorageMapItem(uiView: uiView)
         setupDragPin(uiView)
+        setupStorageMapItem(uiView: uiView)
         setRegion(uiView: uiView)
     }
     
@@ -70,11 +70,14 @@ public struct MapViewRepresentable: UIViewRepresentable {
     
     private func removeAllAnnotation(uiView: UIViewType) {
         let allAnnotations = uiView.annotations
-        uiView.removeAnnotations(allAnnotations)
+        let allAnnotationsFilter = allAnnotations.filter {
+            !($0 is DragPin)
+        }
+        uiView.removeAnnotations(allAnnotationsFilter)
     }
     
     private func setupDragPin(_ uiView: MKMapView) {
-        let existingDragPin = uiView.annotations.first { $0 is DragPin } as? DragPin
+        let existingDragPin = uiView.annotations.filter { $0 is DragPin }.first as? DragPin
         if isPin {
             if existingDragPin == nil {
                 let dragPin = DragPin(coordinate: uiView.region.center)
