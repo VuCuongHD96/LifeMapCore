@@ -35,6 +35,9 @@ public struct MapViewRepresentable: UIViewRepresentable {
     public func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
+        mapView.showsCompass = true
+        mapView.showsUserTrackingButton = true
+        mapView.showsUserLocation = true
         return mapView
     }
     
