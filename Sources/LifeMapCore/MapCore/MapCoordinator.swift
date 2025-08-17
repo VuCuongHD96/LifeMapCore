@@ -6,9 +6,11 @@
 //
 
 import MapKit
+import UIKit
 
 public class MapCoordinator: NSObject, MKMapViewDelegate {
     
+    var polylineDictionary: [MKPolyline : UIColor] = [:]
     let param: Param
     let locationUseCase = LocationUseCase()
     
@@ -70,5 +72,16 @@ public class MapCoordinator: NSObject, MKMapViewDelegate {
             mapView.selectAnnotation(updatedPin, animated: true)
             self.param.dragPinHander?(updatedPin)
         }
+    }
+    
+    public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if let polyline = overlay as? MKPolyline {
+            let renderer = MKPolylineRenderer(polyline: polyline)
+            let uiColor = polylineDictionary[polyline]
+            renderer.strokeColor = uiColor
+            renderer.lineWidth = 5.0
+            return renderer
+        }
+        return MKPolylineRenderer(overlay: overlay)
     }
 }

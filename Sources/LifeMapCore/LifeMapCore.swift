@@ -24,6 +24,7 @@ public struct LifeMapCore: View {
             locationFocus: output.locationFocus,
             storageMapItemList: output.storageMapItemList,
             searchMapItemList: output.searchMapItemList,
+            polylineDictionary: [:],
             mapCoordinatorParam: .init(dragPinHander: {
                 input.dragPinTrigger.send($0)
             }, mapItemHandler: {
