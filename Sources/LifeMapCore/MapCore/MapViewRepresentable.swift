@@ -12,10 +12,11 @@ public struct MapViewRepresentable: UIViewRepresentable {
     
     public typealias UIViewType = MKMapView
     
-    public let isPin: Bool
-    public let locationFocus: CLLocationCoordinate2D?
-    public let storageMapItemList: [StorageMapItemViewData]
-    public let searchMapItemList: [SearchMapItemViewData]
+    let isPin: Bool
+    let locationFocus: CLLocationCoordinate2D?
+    let storageMapItemList: [StorageMapItemViewData]
+    let searchMapItemList: [SearchMapItemViewData]
+    let polylineDictionary: [MKPolyline: UIColor]
     let mapCoordinatorParam: MapCoordinator.Param
     
     public init(
@@ -23,12 +24,14 @@ public struct MapViewRepresentable: UIViewRepresentable {
         locationFocus: CLLocationCoordinate2D?,
         storageMapItemList: [StorageMapItemViewData],
         searchMapItemList: [SearchMapItemViewData],
+        polylineDictionary: [MKPolyline: UIColor],
         mapCoordinatorParam: MapCoordinator.Param
     ) {
         self.isPin = isPin
         self.locationFocus = locationFocus
         self.storageMapItemList = storageMapItemList
         self.searchMapItemList = searchMapItemList
+        self.polylineDictionary = polylineDictionary
         self.mapCoordinatorParam = mapCoordinatorParam
     }
     
@@ -50,6 +53,16 @@ public struct MapViewRepresentable: UIViewRepresentable {
         setupDragPin(uiView)
         setupStorageMapItem(uiView: uiView)
         setRegion(uiView: uiView)
+        setupPolyline(uiView: uiView, context: context)
+    }
+    
+    private func setupPolyline(uiView: UIViewType, context: Context) {
+        context.coordinator.polylineDictionary = polylineDictionary
+        uiView.removeOverlays(uiView.overlays)
+        let polyLineList = polylineDictionary.keys
+        polyLineList.forEach {
+            uiView.addOverlay($0)
+        }
     }
     
     private func setupSearchMapItem(uiView: UIViewType) {
