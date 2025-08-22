@@ -7,7 +7,7 @@
 
 import MapKit
 
-public class CoreAnnotation: NSObject, MKAnnotation {
+open class CoreAnnotation: NSObject, MKAnnotation {
     
     public var coordinate: CLLocationCoordinate2D
     

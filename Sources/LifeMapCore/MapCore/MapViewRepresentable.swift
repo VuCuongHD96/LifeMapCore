@@ -14,8 +14,8 @@ public struct MapViewRepresentable: UIViewRepresentable {
     
     let isPin: Bool
     let locationFocus: CLLocationCoordinate2D?
-    let storageMapItemList: [StorageMapItemViewData]
-    let searchMapItemList: [SearchMapItemViewData]
+    let storageMapItemList: [LocationAnnotation]
+    let searchMapItemList: [LocationAnnotation]
     let polylineDictionary: [MKPolyline: UIColor]
     let mapCoordinatorParam: MapCoordinator.Param
     
@@ -41,6 +41,7 @@ public struct MapViewRepresentable: UIViewRepresentable {
         mapView.showsCompass = true
         mapView.showsUserTrackingButton = true
         mapView.showsUserLocation = true
+        setupStorageMapItem(uiView: mapView)
         return mapView
     }
     
@@ -51,7 +52,6 @@ public struct MapViewRepresentable: UIViewRepresentable {
     public func updateUIView(_ uiView: UIViewType, context: Context) {
         setupSearchMapItem(uiView: uiView)
         setupDragPin(uiView)
-        setupStorageMapItem(uiView: uiView)
         setRegion(uiView: uiView)
         setupPolyline(uiView: uiView, context: context)
     }

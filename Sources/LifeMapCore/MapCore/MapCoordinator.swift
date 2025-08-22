@@ -71,6 +71,8 @@ public class MapCoordinator: NSObject, MKMapViewDelegate {
             mapView.addAnnotation(updatedPin)
             mapView.selectAnnotation(updatedPin, animated: true)
             self.param.dragPinHander?(updatedPin)
+            
+//            dragPin.coordinate = updatedPin.coordinate --> test
         }
     }
     
